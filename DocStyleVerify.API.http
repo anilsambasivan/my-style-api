@@ -1,0 +1,6 @@
+@DocStyleVerify.API_HostAddress = http://localhost:5177
+
+GET {{DocStyleVerify.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
