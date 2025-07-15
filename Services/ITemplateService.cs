@@ -12,6 +12,7 @@ namespace DocStyleVerify.API.Services
         Task<bool> DeleteTemplateAsync(int id);
         Task<TemplateExtractionResult> ProcessTemplateAsync(int templateId);
         Task<IEnumerable<TextStyleDto>> GetTemplateStylesAsync(int templateId, string? styleType = null);
+        Task<TemplateStylesResponseDto> GetTemplateStylesWithDetailsAsync(int templateId, string? styleType = null);
         Task<bool> TemplateExistsAsync(int id);
         Task<string> GetTemplateFilePathAsync(int id);
         Task<Template?> GetTemplateEntityAsync(int id);

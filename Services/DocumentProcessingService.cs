@@ -34,8 +34,26 @@ namespace DocStyleVerify.API.Services
                 // Extract styles without saving
                 var (extractedStyles, extractedPatterns) = await ExtractStylesOnlyAsync(documentStream, templateId, createdBy);
 
+                // Extract default styles and numbering information
+                using var document = WordprocessingDocument.Open(documentStream, false);
+                var mainPart = document.MainDocumentPart;
+                
+                List<DefaultStyle> defaultStyles = new List<DefaultStyle>();
+                List<NumberingDefinition> numberingDefinitions = new List<NumberingDefinition>();
+                
+                if (mainPart != null)
+                {
+                    // Extract default styles from styles.xml
+                    defaultStyles = DefaultStyleExtractor.ExtractDefaultStyles(mainPart, templateId, createdBy);
+                    
+                    // Extract numbering information from numbering.xml
+                    numberingDefinitions = NumberingExtractor.ExtractNumberingDefinitions(mainPart, templateId, createdBy);
+                }
+
                 // Save to database only for template extraction
                 await SaveExtractedStylesAsync(extractedStyles, extractedPatterns);
+                await SaveDefaultStylesAsync(defaultStyles);
+                await SaveNumberingDefinitionsAsync(numberingDefinitions);
 
                 result.TotalTextStyles = extractedStyles.Count;
                 result.TotalDirectFormatPatterns = extractedPatterns.Count;
@@ -45,6 +63,8 @@ namespace DocStyleVerify.API.Services
                 { 
                     $"Processed {extractedStyles.Count} text styles",
                     $"Found {extractedPatterns.Count} direct format patterns",
+                    $"Extracted {defaultStyles.Count} default styles from styles.xml",
+                    $"Extracted {numberingDefinitions.Count} numbering definitions from numbering.xml",
                     $"Covered style types: {string.Join(", ", result.ExtractedStyleTypes)}"
                 };
             }
@@ -1405,6 +1425,24 @@ namespace DocStyleVerify.API.Services
         public async Task<DocumentMetadata> GetDocumentMetadataAsync(Stream documentStream)
         {
             return await DocumentProcessingServiceExtensions.GetDocumentMetadataAsync(this, documentStream);
+        }
+
+        private async Task SaveDefaultStylesAsync(List<DefaultStyle> defaultStyles)
+        {
+            if (defaultStyles.Any())
+            {
+                _context.DefaultStyles.AddRange(defaultStyles);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task SaveNumberingDefinitionsAsync(List<NumberingDefinition> numberingDefinitions)
+        {
+            if (numberingDefinitions.Any())
+            {
+                _context.NumberingDefinitions.AddRange(numberingDefinitions);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 } 

@@ -49,5 +49,7 @@ namespace DocStyleVerify.API.Models
         
         // Navigation properties
         public virtual ICollection<TextStyle> TextStyles { get; set; } = new List<TextStyle>();
+        public virtual ICollection<DefaultStyle> DefaultStyles { get; set; } = new List<DefaultStyle>();
+        public virtual ICollection<NumberingDefinition> NumberingDefinitions { get; set; } = new List<NumberingDefinition>();
     }
 } 

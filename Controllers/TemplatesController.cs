@@ -203,15 +203,15 @@ namespace DocStyleVerify.API.Controllers
         }
 
         /// <summary>
-        /// Get all styles for a specific template
+        /// Get all styles for a specific template including default styles and numbering information
         /// </summary>
         /// <param name="id">Template ID</param>
         /// <param name="styleType">Filter by style type (optional)</param>
-        /// <returns>List of text styles</returns>
+        /// <returns>Complete template styles response including styles, default styles, and numbering information</returns>
         [HttpGet("{id}/styles")]
-        [ProducesResponseType(typeof(IEnumerable<TextStyleDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TemplateStylesResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<TextStyleDto>>> GetTemplateStyles(
+        public async Task<ActionResult<TemplateStylesResponseDto>> GetTemplateStyles(
             int id,
             [FromQuery] string? styleType = null)
         {
@@ -220,8 +220,8 @@ namespace DocStyleVerify.API.Controllers
                 if (!await _templateService.TemplateExistsAsync(id))
                     return NotFound($"Template with ID {id} not found");
 
-                var styles = await _templateService.GetTemplateStylesAsync(id, styleType);
-                return Ok(styles);
+                var result = await _templateService.GetTemplateStylesWithDetailsAsync(id, styleType);
+                return Ok(result);
             }
             catch (Exception ex)
             {

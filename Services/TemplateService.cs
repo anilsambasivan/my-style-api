@@ -219,6 +219,44 @@ namespace DocStyleVerify.API.Services
             return styles.Select(MapTextStyleToDto);
         }
 
+        public async Task<TemplateStylesResponseDto> GetTemplateStylesWithDetailsAsync(int templateId, string? styleType = null)
+        {
+            // Get regular styles
+            var styles = await GetTemplateStylesAsync(templateId, styleType);
+
+            // Get default styles
+            var defaultStylesQuery = _context.DefaultStyles
+                .Where(ds => ds.TemplateId == templateId);
+            
+            if (!string.IsNullOrWhiteSpace(styleType))
+            {
+                defaultStylesQuery = defaultStylesQuery.Where(ds => ds.Type == styleType);
+            }
+
+            var defaultStyles = await defaultStylesQuery.ToListAsync();
+
+            // Get numbering definitions
+            var numberingDefinitions = await _context.NumberingDefinitions
+                .Include(nd => nd.NumberingLevels)
+                .Where(nd => nd.TemplateId == templateId)
+                .ToListAsync();
+
+            // Map to DTOs
+            var defaultStyleDtos = defaultStyles.Select(MapDefaultStyleToDto);
+            var numberingDefinitionDtos = numberingDefinitions.Select(MapNumberingDefinitionToDto);
+
+            return new TemplateStylesResponseDto
+            {
+                Styles = styles.ToList(),
+                DefaultStyles = defaultStyleDtos.ToList(),
+                NumberingDefinitions = numberingDefinitionDtos.ToList(),
+                TotalStyles = styles.Count(),
+                TotalDefaultStyles = defaultStyles.Count,
+                TotalNumberingDefinitions = numberingDefinitions.Count,
+                ExtractedOn = DateTime.UtcNow
+            };
+        }
+
         public async Task<bool> TemplateExistsAsync(int id)
         {
             return await _context.Templates.AnyAsync(t => t.Id == id);
@@ -383,6 +421,86 @@ namespace DocStyleVerify.API.Services
             using var sha256 = SHA256.Create();
             var hashBytes = await sha256.ComputeHashAsync(stream);
             return Convert.ToBase64String(hashBytes);
+        }
+
+        private DefaultStyleDto MapDefaultStyleToDto(DefaultStyle defaultStyle)
+        {
+            return new DefaultStyleDto
+            {
+                Id = defaultStyle.Id,
+                TemplateId = defaultStyle.TemplateId,
+                StyleId = defaultStyle.StyleId,
+                Name = defaultStyle.Name,
+                Type = defaultStyle.Type,
+                BasedOn = defaultStyle.BasedOn,
+                NextStyle = defaultStyle.NextStyle,
+                IsDefault = defaultStyle.IsDefault,
+                IsCustom = defaultStyle.IsCustom,
+                Priority = defaultStyle.Priority,
+                IsHidden = defaultStyle.IsHidden,
+                IsQuickStyle = defaultStyle.IsQuickStyle,
+                FontFamily = defaultStyle.FontFamily,
+                FontSize = defaultStyle.FontSize,
+                IsBold = defaultStyle.IsBold,
+                IsItalic = defaultStyle.IsItalic,
+                IsUnderline = defaultStyle.IsUnderline,
+                Color = defaultStyle.Color,
+                Alignment = defaultStyle.Alignment,
+                SpacingBefore = defaultStyle.SpacingBefore,
+                SpacingAfter = defaultStyle.SpacingAfter,
+                IndentationLeft = defaultStyle.IndentationLeft,
+                IndentationRight = defaultStyle.IndentationRight,
+                FirstLineIndent = defaultStyle.FirstLineIndent,
+                LineSpacing = defaultStyle.LineSpacing,
+                RawXml = defaultStyle.RawXml,
+                CreatedBy = defaultStyle.CreatedBy,
+                CreatedOn = defaultStyle.CreatedOn,
+                ModifiedBy = defaultStyle.ModifiedBy,
+                ModifiedOn = defaultStyle.ModifiedOn
+            };
+        }
+
+        private NumberingDefinitionDto MapNumberingDefinitionToDto(NumberingDefinition numberingDefinition)
+        {
+            return new NumberingDefinitionDto
+            {
+                Id = numberingDefinition.Id,
+                TemplateId = numberingDefinition.TemplateId,
+                AbstractNumId = numberingDefinition.AbstractNumId,
+                NumberingId = numberingDefinition.NumberingId,
+                Name = numberingDefinition.Name,
+                Type = numberingDefinition.Type,
+                RawXml = numberingDefinition.RawXml,
+                NumberingLevels = numberingDefinition.NumberingLevels.Select(MapNumberingLevelToDto).ToList(),
+                CreatedBy = numberingDefinition.CreatedBy,
+                CreatedOn = numberingDefinition.CreatedOn,
+                ModifiedBy = numberingDefinition.ModifiedBy,
+                ModifiedOn = numberingDefinition.ModifiedOn
+            };
+        }
+
+        private NumberingLevelDto MapNumberingLevelToDto(NumberingLevel numberingLevel)
+        {
+            return new NumberingLevelDto
+            {
+                Id = numberingLevel.Id,
+                NumberingDefinitionId = numberingLevel.NumberingDefinitionId,
+                Level = numberingLevel.Level,
+                NumberFormat = numberingLevel.NumberFormat,
+                LevelText = numberingLevel.LevelText,
+                LevelJustification = numberingLevel.LevelJustification,
+                StartValue = numberingLevel.StartValue,
+                IsLegal = numberingLevel.IsLegal,
+                FontFamily = numberingLevel.FontFamily,
+                FontSize = numberingLevel.FontSize,
+                IsBold = numberingLevel.IsBold,
+                IsItalic = numberingLevel.IsItalic,
+                Color = numberingLevel.Color,
+                IndentationLeft = numberingLevel.IndentationLeft,
+                IndentationHanging = numberingLevel.IndentationHanging,
+                TabStopPosition = numberingLevel.TabStopPosition,
+                RawXml = numberingLevel.RawXml
+            };
         }
     }
 } 

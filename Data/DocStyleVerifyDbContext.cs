@@ -11,6 +11,9 @@ namespace DocStyleVerify.API.Data
 
         public DbSet<Template> Templates { get; set; }
         public DbSet<TextStyle> TextStyles { get; set; }
+        public DbSet<DefaultStyle> DefaultStyles { get; set; }
+        public DbSet<NumberingDefinition> NumberingDefinitions { get; set; }
+        public DbSet<NumberingLevel> NumberingLevels { get; set; }
         public DbSet<DirectFormatPattern> DirectFormatPatterns { get; set; }
         public DbSet<FormattingContext> FormattingContexts { get; set; }
         public DbSet<TabStop> TabStops { get; set; }
@@ -169,6 +172,74 @@ namespace DocStyleVerify.API.Data
                 entity.HasIndex(e => e.VerificationResultId);
                 entity.HasIndex(e => e.ContextKey);
                 entity.HasIndex(e => e.Severity);
+            });
+
+            // DefaultStyle configuration
+            modelBuilder.Entity<DefaultStyle>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.StyleId).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.Type).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.BasedOn).HasMaxLength(200);
+                entity.Property(e => e.NextStyle).HasMaxLength(200);
+                entity.Property(e => e.FontFamily).HasMaxLength(100);
+                entity.Property(e => e.Color).HasMaxLength(10);
+                entity.Property(e => e.Alignment).HasMaxLength(50);
+                entity.Property(e => e.RawXml).HasColumnType("text");
+                entity.Property(e => e.CreatedBy).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.CreatedOn).IsRequired();
+                entity.Property(e => e.ModifiedBy).HasMaxLength(100);
+                
+                entity.HasOne(e => e.Template)
+                    .WithMany(t => t.DefaultStyles)
+                    .HasForeignKey(e => e.TemplateId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                
+                entity.HasIndex(e => e.TemplateId);
+                entity.HasIndex(e => e.StyleId);
+                entity.HasIndex(e => e.Type);
+            });
+
+            // NumberingDefinition configuration
+            modelBuilder.Entity<NumberingDefinition>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.Type).HasMaxLength(50);
+                entity.Property(e => e.RawXml).HasColumnType("text");
+                entity.Property(e => e.CreatedBy).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.CreatedOn).IsRequired();
+                entity.Property(e => e.ModifiedBy).HasMaxLength(100);
+                
+                entity.HasOne(e => e.Template)
+                    .WithMany(t => t.NumberingDefinitions)
+                    .HasForeignKey(e => e.TemplateId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                
+                entity.HasIndex(e => e.TemplateId);
+                entity.HasIndex(e => e.AbstractNumId);
+                entity.HasIndex(e => e.NumberingId);
+            });
+
+            // NumberingLevel configuration
+            modelBuilder.Entity<NumberingLevel>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.NumberFormat).HasMaxLength(50);
+                entity.Property(e => e.LevelText).HasMaxLength(200);
+                entity.Property(e => e.LevelJustification).HasMaxLength(10);
+                entity.Property(e => e.FontFamily).HasMaxLength(100);
+                entity.Property(e => e.Color).HasMaxLength(10);
+                entity.Property(e => e.RawXml).HasColumnType("text");
+                
+                entity.HasOne(e => e.NumberingDefinition)
+                    .WithMany(nd => nd.NumberingLevels)
+                    .HasForeignKey(e => e.NumberingDefinitionId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                
+                entity.HasIndex(e => e.NumberingDefinitionId);
+                entity.HasIndex(e => e.Level);
             });
         }
     }
