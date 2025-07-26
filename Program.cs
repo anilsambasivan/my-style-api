@@ -6,14 +6,19 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
+// Add DbContext
 builder.Services.AddDbContext<DocStyleVerifyDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseNpgsql(connectionString);
 });
 
+// Add services
 builder.Services.AddScoped<IDocumentProcessingService, DocumentProcessingService>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
 
@@ -61,6 +66,9 @@ builder.Services.Configure<IISServerOptions>(options =>
 
 var app = builder.Build();
 
+
+
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
