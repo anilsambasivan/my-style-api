@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Style Suggestions</title>
+    
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0078d4, #106ebe);
+            color: white;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .container {
+            padding: 16px;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .load-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .load-button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .load-button:hover {
+            background: #106ebe;
+        }
+
+        .load-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin: 16px 0;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .status.info {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+        }
+
+        .status.error {
+            background: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+
+        .status.success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            height: 100%;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .suggestion-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
+            overflow: hidden;
+            border-left: 4px solid #0078d4;
+        }
+
+        .suggestion-header {
+            padding: 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .suggestion-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .suggestion-location {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-message {
+            font-size: 13px;
+            color: #555;
+            background: #fff3cd;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .preview-section {
+            padding: 16px;
+        }
+
+        .preview-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .preview-box {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .preview-label {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .preview-content {
+            padding: 12px;
+            min-height: 60px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .current-style {
+            border-left: 3px solid #dc3545;
+        }
+
+        .suggested-style {
+            border-left: 3px solid #28a745;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 16px;
+        }
+
+        .apply-button {
+            flex: 1;
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .apply-button:hover {
+            background: #218838;
+        }
+
+        .apply-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .skip-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .skip-button:hover {
+            background: #545b62;
+        }
+
+        .navigation-info {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #0078d4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Style Suggestions</h1>
+        <p>Improve your document formatting</p>
+    </div>
+
+    <div class="container">
+        <!-- Load Suggestions Section -->
+        <div id="loadSection" class="load-section">
+            <button id="loadSuggestionsBtn" class="load-button">
+                Load Style Suggestions
+            </button>
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+                Click to load suggestions from your JSON file
+            </p>
+        </div>
+
+        <!-- Status Messages -->
+        <div id="statusMessage" class="status hidden"></div>
+
+        <!-- Progress Bar -->
+        <div id="progressContainer" class="hidden">
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div id="progressText" class="navigation-info"></div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div id="mainContent" class="hidden">
+            <!-- Current Suggestion Card -->
+            <div id="suggestionCard" class="suggestion-card">
+                <div class="suggestion-header">
+                    <div id="suggestionTitle" class="suggestion-title"></div>
+                    <div id="suggestionLocation" class="suggestion-location"></div>
+                    <div id="suggestionMessage" class="suggestion-message"></div>
+                </div>
+                
+                <div class="preview-section">
+                    <div class="preview-container">
+                        <div class="preview-box current-style">
+                            <div class="preview-label">Current Style</div>
+                            <div id="currentPreview" class="preview-content"></div>
+                        </div>
+                        <div class="preview-box suggested-style">
+                            <div class="preview-label">Suggested Style</div>
+                            <div id="suggestedPreview" class="preview-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="applyButton" class="apply-button">
+                        Apply Suggestion
+                    </button>
+                    <button id="skipButton" class="skip-button">
+                        Skip
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state hidden">
+            <div class="empty-state-icon">📝</div>
+            <h3>No More Suggestions</h3>
+            <p>All style suggestions have been processed!</p>
+        </div>
+    </div>
+
+    <!-- File Input (Hidden) -->
+    <input type="file" id="fileInput" accept=".json" style="display: none;">
+</body>
+</html> 
