@@ -26,7 +26,7 @@ namespace DocStyleVerify.API.Models
         [StringLength(20)]
         public string Status { get; set; } = "Completed"; // Pending, Completed, Failed
         
-        [StringLength(1000)]
+        [StringLength(5000)]
         public string ErrorMessage { get; set; } = string.Empty;
         
         // Audit fields
@@ -55,7 +55,7 @@ namespace DocStyleVerify.API.Models
         public string ContextKey { get; set; } = string.Empty;
         
         [Required]
-        [StringLength(1000)]
+        [StringLength(5000)]
         public string Location { get; set; } = string.Empty;
         
         [Required]
@@ -69,10 +69,10 @@ namespace DocStyleVerify.API.Models
         public string Actual { get; set; } = string.Empty; // JSON serialized
         
         [Required]
-        [StringLength(1000)]
+        [StringLength(5000)]
         public string MismatchFields { get; set; } = string.Empty; // Comma separated list
         
-        [StringLength(1000)]
+        [StringLength(5000)]
         public string SampleText { get; set; } = string.Empty;
         
         [Required]

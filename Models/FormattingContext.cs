@@ -22,7 +22,7 @@ namespace DocStyleVerify.API.Models
         [StringLength(100)]
         public string StructuralRole { get; set; } = string.Empty;
         
-        [StringLength(1000)]
+        [StringLength(5000)]
         public string SampleText { get; set; } = string.Empty;
         
         [StringLength(200)]

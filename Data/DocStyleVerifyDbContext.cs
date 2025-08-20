@@ -157,9 +157,10 @@ namespace DocStyleVerify.API.Data
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.ContextKey).IsRequired().HasMaxLength(500);
-                entity.Property(e => e.Location).IsRequired().HasMaxLength(1000);
+                entity.Property(e => e.Location).IsRequired().HasMaxLength(5000);
                 entity.Property(e => e.StructuralRole).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.MismatchFields).IsRequired().HasMaxLength(1000);
+                entity.Property(e => e.MismatchFields).IsRequired().HasMaxLength(5000);
+                entity.Property(e => e.SampleText).HasMaxLength(5000);
                 entity.Property(e => e.Severity).IsRequired().HasMaxLength(50).HasDefaultValue("Medium");
                 entity.Property(e => e.CreatedOn).IsRequired();
                 

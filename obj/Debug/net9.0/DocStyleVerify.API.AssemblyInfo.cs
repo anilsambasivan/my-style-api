@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DocStyleVerify.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc0e1011c503233829d5e0f208bb5f43279d37f7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bad71d4f6e58c7e734e8cb8afddf499535b5f6e2")]
 [assembly: System.Reflection.AssemblyProductAttribute("DocStyleVerify.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DocStyleVerify.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

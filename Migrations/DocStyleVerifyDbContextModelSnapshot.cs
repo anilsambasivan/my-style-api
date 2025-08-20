@@ -242,8 +242,8 @@ namespace DocStyleVerify.API.Migrations
 
                     b.Property<string>("SampleText")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<float?>("SpacingAfter")
                         .HasColumnType("real");
@@ -361,8 +361,8 @@ namespace DocStyleVerify.API.Migrations
 
                     b.Property<string>("SampleText")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<int>("SectionIndex")
                         .HasColumnType("integer");
@@ -419,18 +419,18 @@ namespace DocStyleVerify.API.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<string>("MismatchFields")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<string>("SampleText")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<string>("Severity")
                         .IsRequired()
@@ -1150,8 +1150,8 @@ namespace DocStyleVerify.API.Migrations
 
                     b.Property<string>("ErrorMessage")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<string>("Status")
                         .IsRequired()

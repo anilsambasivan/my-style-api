@@ -54,7 +54,7 @@ namespace DocStyleVerify.API.Models
         public float? FirstLineIndent { get; set; }
         public float? LineSpacing { get; set; }
         
-        [StringLength(1000)]
+        [StringLength(5000)]
         public string SampleText { get; set; } = string.Empty;
         
         public int OccurrenceCount { get; set; } = 0;

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DocStyleVerify.API.Migrations
 {
     [DbContext(typeof(DocStyleVerifyDbContext))]
-    [Migration("20250715032045_AddDefaultStylesAndNumbering")]
-    partial class AddDefaultStylesAndNumbering
+    [Migration("20250812023605_AlterColumnSizesTo5000")]
+    partial class AlterColumnSizesTo5000
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -245,8 +245,8 @@ namespace DocStyleVerify.API.Migrations
 
                     b.Property<string>("SampleText")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<float?>("SpacingAfter")
                         .HasColumnType("real");
@@ -364,8 +364,8 @@ namespace DocStyleVerify.API.Migrations
 
                     b.Property<string>("SampleText")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<int>("SectionIndex")
                         .HasColumnType("integer");
@@ -422,18 +422,18 @@ namespace DocStyleVerify.API.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<string>("MismatchFields")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<string>("SampleText")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<string>("Severity")
                         .IsRequired()
@@ -1153,8 +1153,8 @@ namespace DocStyleVerify.API.Migrations
 
                     b.Property<string>("ErrorMessage")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<string>("Status")
                         .IsRequired()
